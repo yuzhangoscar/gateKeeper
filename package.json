@@ -1,0 +1,36 @@
+{
+  "name": "gatekeeper",
+  "version": "1.0.0",
+  "description": "Automated end-to-end testing project for web application using Playwright",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:chromium": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "test:debug": "npx playwright test --debug",
+    "report": "npx playwright show-report",
+    "lint": "eslint tests/ --ext .ts",
+    "lint:fix": "eslint tests/ --ext .ts --fix",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "e2e",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.1",
+    "@commitlint/config-conventional": "^20.4.1",
+    "@playwright/test": "^1.58.2",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "typescript": "^5.9.3"
+  }
+}
