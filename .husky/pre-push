@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# ============================================================
+# Branch Naming Convention Enforcement
+# ============================================================
+# Allowed branch name patterns:
+#   main, master, develop
+#   feature/<description>
+#   bugfix/<description>
+#   hotfix/<description>
+#   release/<description>
+#   test/<description>
+#   chore/<description>
+#   docs/<description>
+#
+# Description must use lowercase letters, numbers, and hyphens.
+# Examples:
+#   feature/login-page-tests
+#   bugfix/fix-flaky-navigation-test
+#   test/add-api-smoke-tests
+# ============================================================
+
+BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+if [ -z "$BRANCH_NAME" ]; then
+  echo "⚠️  Could not determine branch name. Skipping branch name check."
+  exit 0
+fi
+
+VALID_PATTERN="^(main|master|develop)$|^(feature|bugfix|hotfix|release|test|chore|docs)\/[a-z0-9][a-z0-9\-]*[a-z0-9]$"
+
+if ! echo "$BRANCH_NAME" | grep -qE "$VALID_PATTERN"; then
+  echo ""
+  echo "❌ Invalid branch name: '$BRANCH_NAME'"
+  echo ""
+  echo "Branch names must follow this convention:"
+  echo "  main, master, develop"
+  echo "  feature/<description>"
+  echo "  bugfix/<description>"
+  echo "  hotfix/<description>"
+  echo "  release/<description>"
+  echo "  test/<description>"
+  echo "  chore/<description>"
+  echo "  docs/<description>"
+  echo ""
+  echo "Description must use lowercase letters, numbers, and hyphens."
+  echo "Example: feature/login-page-tests"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Branch name '$BRANCH_NAME' is valid."
