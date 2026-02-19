@@ -61,6 +61,39 @@ test.describe('GateKeeper Tests', () => {
         await expect(page.getByText('ReferenceReferenceStatus')).toBeVisible();
     });
 
+    test('Fill in candidate info', async ({ page }) => {
+        const page2Promise = page.waitForEvent('popup');
+        await page.locator('button').nth(5).click();
+        const page2 = await page2Promise;
+        await page2.getByRole('button', { name: 'Next' }).click();
+        await page2.locator('div:has(> label:text("First Name")) input').fill('firstName');
+        await page2.locator('div:has(> label:text("Last Name")) input').fill('lastName');
+        await page2.locator('input[type="email"]').click();
+        await page2.locator('input[type="email"]').fill('test@gmail.com');
+        await page2.locator('input[type="email"]').press('Tab');
+        await page2.getByRole('textbox').nth(4).fill('1');
+        await page2.getByRole('textbox', { name: 'DD', exact: true }).click();
+        await page2.getByRole('textbox', { name: 'DD', exact: true }).fill('1');
+        await page2.getByRole('textbox', { name: 'MM' }).click();
+        await page2.getByRole('textbox', { name: 'MM' }).fill('1');
+        await page2.getByRole('textbox', { name: 'YYYY' }).click();
+        await page2.getByRole('textbox', { name: 'YYYY' }).fill('1999');
+        await page2.locator('select[name="Gender"]').selectOption('M');
+        await page2.getByRole('checkbox', { name: 'Please check if the address' }).check();
+        await page2.locator('div:has(> label:text("Street Number")) input').fill('1');
+        await page2.locator('div:has(> label:text("Street Name")) input').fill('streetName');
+        await page2.locator('div:has(> label:text("Suburb")) input').fill('suburb');
+        await page2.locator('div:has(> label:text("Postcode/Zipcode *")) input').fill('2000');
+        await page2.locator('select[name="State"]').selectOption('NSW');
+        await page2.getByRole('button', { name: 'Next' }).click();
+        await page2.getByRole('button', { name: 'Sign' }).click();
+        await page2.getByRole('menuitem', { name: 'Type Signature' }).click();
+        await page2.getByRole('textbox').click();
+        await page2.getByRole('textbox').fill('fl');
+        await page2.getByRole('button', { name: 'Save and Continue' }).click();
+        await page2.getByRole('button', { name: 'Proceed' }).click();
+    });
+
     test('National Police Check', async ({ page }) => {
         await page.waitForTimeout(1000);
         await page.getByRole('button', { name: 'Checks' }).click();
