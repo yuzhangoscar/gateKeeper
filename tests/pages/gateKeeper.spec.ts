@@ -63,5 +63,11 @@ test.describe('GateKeeper Tests', () => {
 
     test('National Police Check', async ({ page }) => {
         await page.waitForTimeout(1000);
+        await page.getByRole('button', { name: 'Checks' }).click();
+        await page.getByRole('textbox').first().click();
+        await page.getByRole('textbox').first().fill('national police check');
+        await page.waitForTimeout(2000);
+        await page.getByRole('cell', { name: 'National Police Check' }).first().click();
+        await page.waitForTimeout(2000);
     });
 });
