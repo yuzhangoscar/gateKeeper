@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/base';
 
 test.describe.serial('GateKeeper Tests', () => {
     test.beforeEach('test', async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe.serial('GateKeeper Tests', () => {
         await expect(page.getByText('ReferenceReferenceStatus')).toBeVisible();
     });
 
-    test('Fill in candidate info', async ({ page }) => {
+    test('Fill in candidate info', async ({ page, uploadFile }) => {
         const page2Promise = page.waitForEvent('popup');
         await page.locator('button').nth(5).click();
         const page2 = await page2Promise;
@@ -92,38 +92,10 @@ test.describe.serial('GateKeeper Tests', () => {
         await page2.getByRole('textbox').fill('fl');
         await page2.getByRole('button', { name: 'Save and Continue' }).click();
         await page2.getByRole('button', { name: 'Proceed' }).click();
-        await page2.locator('label[for="Choose your document Type"] + div div[role="button"]').click();
-        await page2.getByRole('option', { name: 'Australian Birth Certificate' }).click();
-        const birthFileChooserPromise = page2.waitForEvent('filechooser');
-        await page2.getByLabel('Upload Image').click();
-        const birthFileChooser = await birthFileChooserPromise;
-        await birthFileChooser.setFiles('tests/resources/Sample_Birth_Certificate.jpg');
-        await page2.locator('button[type="submit"]', { hasText: 'Verify Your Details' }).click();
-        await page2.waitForTimeout(2000);
-        await page2.locator('label[for="Choose your document Type"] + div div[role="button"]').click();
-        await page2.getByRole('option', { name: 'Australian Marriage Certificate' }).click();
-        const marriageFileChooserPromise = page2.waitForEvent('filechooser');
-        await page2.getByLabel('Upload Image').click();
-        const marriageFileChooser = await marriageFileChooserPromise;
-        await marriageFileChooser.setFiles('tests/resources/Sample_Marriage_Certificate.jpg');
-        await page2.locator('button[type="submit"]', { hasText: 'Verify Your Details' }).click();
-        await page2.waitForTimeout(2000);
-        await page2.locator('label[for="Choose your document Type"] + div div[role="button"]').click();
-        await page2.getByRole('option', { name: 'Bank Card' }).click();
-        const bankcardChooserPromise = page2.waitForEvent('filechooser');
-        await page2.getByLabel('Upload Image').click();
-        const bankcardChooser = await bankcardChooserPromise;
-        await bankcardChooser.setFiles('tests/resources/Sample_Bank_Card.jpg');
-        await page2.locator('button[type="submit"]', { hasText: 'Verify Your Details' }).click();
-        await page2.waitForTimeout(2000);
-        await page2.locator('label[for="Choose your document Type"] + div div[role="button"]').click();
-        await page2.getByRole('option', { name: 'Credit Card' }).click();
-        const creditCardChooserPromise = page2.waitForEvent('filechooser');
-        await page2.getByLabel('Upload Image').click();
-        const creditCardChooser = await creditCardChooserPromise;
-        await creditCardChooser.setFiles('tests/resources/Sample_Credit_Card.jpg');
-        await page2.locator('button[type="submit"]', { hasText: 'Verify Your Details' }).click();
-        await page2.waitForTimeout(2000);
+        await uploadFile(page2, 'Australian Birth Certificate', 'tests/resources/Sample_Birth_Certificate.jpg');
+        await uploadFile(page2, 'Australian Marriage Certificate', 'tests/resources/Sample_Marriage_Certificate.jpg');
+        await uploadFile(page2, 'Bank Card', 'tests/resources/Sample_Bank_Card.jpg');
+        await uploadFile(page2, 'Credit Card', 'tests/resources/Sample_Credit_Card.jpg');
         await page2.getByRole('button', { name: 'Take Picture' }).click();
         await page2.getByRole('button', { name: 'Okay' }).click();
         await page2.getByRole('button', { name: 'Take Photo' }).click();
